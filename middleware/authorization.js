@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 //白名单
-const whiteList = ['/login/checklogin']   
+const whiteList = ['/login/checklogin']
 
 let authorization = function(){
     return function(req,res,next){

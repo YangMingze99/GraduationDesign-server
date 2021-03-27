@@ -37,6 +37,10 @@ const userSchema = new Schema({
         type:Date,
         default:Date.now
     },
+	role:{
+		type:Number,
+		default:1
+	}
 },{
     //schema 进一步参数配置
     timestamps:{

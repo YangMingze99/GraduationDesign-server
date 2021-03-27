@@ -34,4 +34,15 @@ router.get('/getParentIDByName',function(req,res,next){
 		})
 	});
 })
+
+router.get('/getUrlMessageByClassId',function(req,res,next){
+	navBarModel.find({
+		classId:req.query.classId
+	},{itemName:1,itemUrl:1},(error,result)=>{
+		res.json({
+			code: 200,
+			data: result
+		})
+	})
+})
 module.exports = router;

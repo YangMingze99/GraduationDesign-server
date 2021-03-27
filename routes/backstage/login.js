@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const usersModel = require('../model/usersModel.js');
+const usersModel = require('../../model/usersModel.js');
 const jwt = require('jsonwebtoken');
-const md5Tool = require('../tools/md5.js')
+const md5Tool = require('../../tools/md5.js')
 
 
 

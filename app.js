@@ -9,8 +9,8 @@ const authorization = require("./middleware/authorization.js")
 const bodyParser = require("body-parser");
 
 //后台路由
-const homeRouter = require('./routes/home.js');
-const loginRouter = require('./routes/login.js');
+const homeRouter = require('./routes/backstage/home.js');
+const loginRouter = require('./routes/backstage/login.js');
 
 //前台路由
 const navItemRouter = require('./routes/foreground/navItems.js');
@@ -24,9 +24,10 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 app.use('/public',express.static(path.join(__dirname, 'public')));
+app.use('/images_temp',express.static(path.join(__dirname, 'images_temp')));
 
 //跨域处理要在路由之前
-const whiteList = ["http://localhost:8080","http://192.168.31.129:8080","http://192.168.0.106:8080"];
+const whiteList = ["http://localhost:8080","http://192.168.28.181:8080","http://192.168.0.108:8080","http://192.168.3.224:8080"];
 const corsOptions = {
 	origin:function(origin , callback){
 		console.log(origin,'o');
@@ -46,12 +47,11 @@ app.use('/newsItem', newsItemRouter);
 
 
 
-
+app.use('/home', homeRouter);
 //权限验证
 app.use(authorization());
 
 //后台url
-app.use('/home', homeRouter);
 app.use('/login', loginRouter);
 
 

@@ -68,6 +68,16 @@ router.get('/getAllUsers', (req, res, next) => {
 		})
 	})
 })
+//根据id查找用户
+router.get('/getUserById',(req,res,next) => {
+	const userId = req.query.id;
+	usersModel.find({_id:userId},(error,result) => {
+		res.json({
+			code:666,
+			data:result[0]
+		})
+	})
+})
 //根据id删除用户
 router.post('/deleteUser', (req, res, next) => {
 	const deleteItemId = req.body.id

@@ -58,6 +58,7 @@ router.post('/adduser', (req, res, next) => {
 		})
 	})
 })
+
 //获取全部用户信息
 router.get('/getAllUsers', (req, res, next) => {
 	usersModel.find((error, data) => {
@@ -68,16 +69,20 @@ router.get('/getAllUsers', (req, res, next) => {
 		})
 	})
 })
+
 //根据id查找用户
-router.get('/getUserById',(req,res,next) => {
+router.get('/getUserById', (req, res, next) => {
 	const userId = req.query.id;
-	usersModel.find({_id:userId},(error,result) => {
+	usersModel.find({
+		_id: userId
+	}, (error, result) => {
 		res.json({
-			code:666,
-			data:result[0]
+			code: 666,
+			data: result[0]
 		})
 	})
 })
+
 //根据id删除用户
 router.post('/deleteUser', (req, res, next) => {
 	const deleteItemId = req.body.id
@@ -86,7 +91,7 @@ router.post('/deleteUser', (req, res, next) => {
 	}, (error, result) => {
 		if (!error) {
 			res.json({
-				code:666,
+				code: 666,
 				msg: 'success',
 				result
 			})
@@ -95,4 +100,67 @@ router.post('/deleteUser', (req, res, next) => {
 	})
 })
 
+//编辑用户
+router.post('/editUser', async (req, res, next) => {
+	const {
+		_id,
+		username,
+		nickname,
+		gender,
+		age,
+		introduce
+	} = req.body.formData;
+	const newAvatar = req.body.formData.newAvatar ? req.body.formData.newAvatar : undefined;
+	const avatar = req.body.formData.newAvatar ? '/public/images/usericon/' + req.body.formData.newAvatar : req.body.formData
+		.avatar
+	usersModel.updateMany({
+		"_id": _id
+	}, {
+		$set: {
+			"username": username,
+			"nickname": nickname,
+			"gender": gender,
+			"age": age,
+			"introduce": introduce,
+			"avatar": avatar
+		}
+	}, (error, result) => {
+		if (!error) {
+			if (newAvatar) {
+				fs.rename('./images_temp/' + newAvatar, './public/images/usericon/' + newAvatar, (err) => {})
+			}
+			res.json({
+				code: 666,
+				msg: 'success',
+				result
+			})
+		}
+	})
+})
+
+//修改密码
+router.post('/editPassword', (req, res, next) => {
+	const {
+		password,
+		userId
+	} = req.body.formData
+	const passwordsalt = randomtool.getRandomNumber();
+	const newMd5Password = md5tool.getMd5(password, passwordsalt);
+	usersModel.updateMany({
+		"_id": userId
+	}, {
+		$set: {
+			"passwordsalt" : passwordsalt,
+			"password" : newMd5Password
+		}
+	},(error,result) => {
+		if (!error) {
+			res.json({
+				code: 666,
+				msg: 'success',
+				result
+			})
+		}
+	})
+})
 module.exports = router;

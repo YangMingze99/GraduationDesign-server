@@ -39,7 +39,7 @@ const userSchema = new Schema({
     },
 	role:{
 		type:Number,
-		default:1
+		default:0
 	}
 },{
     //schema 进一步参数配置

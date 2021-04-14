@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const md5tool = require("../../tools/md5.js");
 const randomtool = require("../../tools/random_number.js");
 const usersModel = require('../../model/usersModel.js');
+const userRoleModel = require('../../model/userRoleModel.js');
 const multer = require("multer");
 const path = require("path");
 var fs = require("fs");
@@ -62,7 +63,6 @@ router.post('/adduser', (req, res, next) => {
 //获取全部用户信息
 router.get('/getAllUsers', (req, res, next) => {
 	usersModel.find((error, data) => {
-		// console.log(JSON.stringify(data),'find');
 		res.json({
 			msg: 'success',
 			data
@@ -161,6 +161,16 @@ router.post('/editPassword', (req, res, next) => {
 				result
 			})
 		}
+	})
+})
+
+//获取全部权限类别
+router.get('/getAllUserRole',(req,res,next) => {
+	userRoleModel.find((error, data) => {
+		res.json({
+			msg: 'success',
+			data
+		})
 	})
 })
 module.exports = router;

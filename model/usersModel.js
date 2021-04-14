@@ -38,7 +38,7 @@ const userSchema = new Schema({
         default:Date.now
     },
 	role:{
-		type:Number,
+		type:String,
 		default:0
 	}
 },{

@@ -150,10 +150,10 @@ router.post('/editPassword', (req, res, next) => {
 		"_id": userId
 	}, {
 		$set: {
-			"passwordsalt" : passwordsalt,
-			"password" : newMd5Password
+			"passwordsalt": passwordsalt,
+			"password": newMd5Password
 		}
-	},(error,result) => {
+	}, (error, result) => {
 		if (!error) {
 			res.json({
 				code: 666,
@@ -165,7 +165,7 @@ router.post('/editPassword', (req, res, next) => {
 })
 
 //获取全部权限类别
-router.get('/getAllUserRole',(req,res,next) => {
+router.get('/getAllUserRole', (req, res, next) => {
 	userRoleModel.find((error, data) => {
 		res.json({
 			msg: 'success',
@@ -173,4 +173,43 @@ router.get('/getAllUserRole',(req,res,next) => {
 		})
 	})
 })
+
+//根据id更改权限
+router.post('/editUserRoleById', (req, res, next) => {
+	const id = req.body.userid;
+	const newrole = req.body.newrole
+	usersModel.update({
+		"_id": id
+	}, {
+		$set: {
+			"role": newrole
+		}
+	}, (error, result) => {
+		if (!error) {
+			res.json({
+				code: 666,
+				msg: 'success',
+				result
+			})
+		}
+	})
+})
+
+//根据权限id获取权限信息
+router.get('/getRoleInfo', (req, res, next) => {
+	const roleId_find = req.query.roleId;
+	userRoleModel.findOne({
+		"roleId": roleId_find
+	}, (error, result) => {
+		if (!error) {
+			res.json({
+				code: 666,
+				msg: 'success',
+				result
+			})
+		}
+	})
+})
+
+
 module.exports = router;

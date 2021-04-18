@@ -46,8 +46,9 @@ app.use('/navItem', navItemRouter);
 app.use('/newsItem', newsItemRouter);
 
 
-
+//后台url
 app.use('/home', homeRouter);
+
 //权限验证
 app.use(authorization());
 

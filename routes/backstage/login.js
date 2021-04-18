@@ -15,6 +15,7 @@ router.post('/checklogin', function(req, res, next) {
                 const token = jwt.sign({
 			    //私有荷载
 			    username:result[0].username,
+				role:result[0].role,
                 },'SNSD',{expiresIn:60*60*60});
 
                 res.json({

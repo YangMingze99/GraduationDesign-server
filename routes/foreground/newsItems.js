@@ -17,8 +17,9 @@ router.get('/getNewsItem',function(req,res,next){
 router.get('/getNewsItemByParentId',function(req,res,next){
 	// console.log(req.query)
 	newsItemModel.find({
-		parentId:req.query.parentId
-	},{_id:1,newsTitle:1,newsText:1,newsPictures:1,update_time:1},(error,result)=>{
+		parentId:req.query.parentId,
+		// },{_id:1,newsTitle:1,newsText:1,newsPictures:1,update_time:1},(error,result)=>{
+	},(error,result)=>{
 		res.json({
 			code:200,
 			data:result

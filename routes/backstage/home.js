@@ -4,6 +4,7 @@ const md5tool = require("../../tools/md5.js");
 const randomtool = require("../../tools/random_number.js");
 const usersModel = require('../../model/usersModel.js');
 const userRoleModel = require('../../model/userRoleModel.js');
+const newsItemModel = require('../../model/foreground/newsItemModel.js')
 const multer = require("multer");
 const path = require("path");
 var fs = require("fs");
@@ -27,6 +28,12 @@ const upload_temp = multer({
 
 //处理预览图
 router.post('/uploadImagePreview', upload_temp.single('usericon'), (req, res, next) => {
+	res.end(req.file.filename)
+})
+
+//处理新闻内容图片预览图
+router.post('/uploadImagePreviewForText', upload_temp.single('textPic'), (req, res, next) => {
+	fs.rename('./images_temp/' + req.file.filename, './public/images/newTextPic/' + req.file.filename, (err) => {})
 	res.end(req.file.filename)
 })
 
@@ -211,5 +218,29 @@ router.get('/getRoleInfo', (req, res, next) => {
 	})
 })
 
+//添加新闻
+router.post("/addNewsItem",(req,res,next) => {
+	// fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (err) => {
+	// 	console.log(err);
+	// })
+	let fromData = req.body.data
+	fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (err) => {
+				
+			})
+	fromData.newsPictures = '/public/images/newsPic/' + fromData.newsPictures;
+	newsItemModel.insertMany({...fromData},(error,data) => {
+		if(!error){
+			res.json({
+				code: 666,
+				msg: 'addNews Success',
+			})
+		}
+	})
+})
+
+//修改新闻
+router.post("/editNewsItem",(req,res,next) => {
+	
+})
 
 module.exports = router;

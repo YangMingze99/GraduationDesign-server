@@ -25,7 +25,7 @@ const newsItemSchema = new Schema({
 	},
 	newsPictures:{ //新闻图片
 		type:String,
-		default:'/images/newsDefault.png'
+		default:'/public/images/newsDefault.png'
 	},
 	newsText:{
 		type:String,

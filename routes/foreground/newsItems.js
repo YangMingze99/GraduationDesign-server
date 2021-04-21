@@ -29,7 +29,8 @@ router.get('/getNewsItemByParentId',function(req,res,next){
 
 router.get('/getSwiperBannerNews',function(req,res,next){
 	newsItemModel.find({
-		isBanner:true
+		isBanner:true,
+		isChecked:true
 	},{_id:1,newsTitle:1,newsPictures:1,parentId:1,childrenId:1},(error,result)=>{
 		res.json({
 			code:200,
@@ -39,6 +40,7 @@ router.get('/getSwiperBannerNews',function(req,res,next){
 })
 
 router.get('/getNewsDetail',function(req,res,next){
+	newsItemModel.update({_id:req.query.newsId},{$inc: {newsClicks: 1}},(err,res)=>{})
 	newsItemModel.find({
 		_id:req.query.newsId
 	},(error,result)=>{

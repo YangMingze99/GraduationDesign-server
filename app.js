@@ -27,7 +27,7 @@ app.use('/public',express.static(path.join(__dirname, 'public')));
 app.use('/images_temp',express.static(path.join(__dirname, 'images_temp')));
 
 //跨域处理要在路由之前
-const whiteList = ["http://localhost:8080","http://192.168.28.181:8080","http://192.168.31.98:8080"];
+const whiteList = ["http://localhost:8080","http://localhost:8888","http://192.168.31.98:8888","http://192.168.31.98:8080"];
 const corsOptions = {
 	origin:function(origin , callback){
 		console.log(origin,'o');

@@ -219,17 +219,19 @@ router.get('/getRoleInfo', (req, res, next) => {
 })
 
 //添加新闻
-router.post("/addNewsItem",(req,res,next) => {
+router.post("/addNewsItem", (req, res, next) => {
 	// fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (err) => {
 	// 	console.log(err);
 	// })
 	let fromData = req.body.data
-	fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (err) => {
-				
-			})
+	fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (
+		err) => {
+
+	})
 	fromData.newsPictures = '/public/images/newsPic/' + fromData.newsPictures;
-	newsItemModel.insertMany({...fromData},(error,data) => {
-		if(!error){
+	newsItemModel.insertMany({ ...fromData
+	}, (error, data) => {
+		if (!error) {
 			res.json({
 				code: 666,
 				msg: 'addNews Success',
@@ -239,8 +241,69 @@ router.post("/addNewsItem",(req,res,next) => {
 })
 
 //修改新闻
-router.post("/editNewsItem",(req,res,next) => {
-	
+router.post("/editNewsItem", (req, res, next) => {
+	const newsId = req.body.newsId;
+	const formData = req.body.data;
+	const isNewPic = req.body.newPic;
+	if (isNewPic) {
+		fs.rename('./images_temp/' + req.body.data.newsPictures, './public/images/newsPic/' + req.body.data.newsPictures, (
+			err) => {})
+		formData.newsPictures = '/public/images/newsPic/' + formData.newsPictures;
+	}
+	newsItemModel.updateMany({
+		"_id": newsId
+	}, {
+		$set: {
+			...formData,
+			update_time: new Date()
+		}
+	}, (error, data) => {
+		if(!error){
+			res.json({
+				code: 666,
+				msg: 'editNews Success'
+			})
+		}
+	})
 })
 
+
+router.post("/deleteNewsItem",(req, res, next) => {
+	const newsId = req.body.newsId;
+	newsItemModel.remove({"_id":newsId},(error,data) => {
+		if(!error){
+			res.json({
+				code: 666,
+				msg: 'deleteNews Success'
+			})
+		}
+	})
+})
+
+router.get('/getUnCheckedNewItem',(req, res, next) => {
+	newsItemModel.find({isChecked:false},(error,data) => {
+		if(!error){
+			res.json({
+				code: 666,
+				data
+			})
+		}
+	})
+})
+
+router.post('/commitNewsItem',(req, res, next) => {
+	const newsId = req.body.newsId;
+	newsItemModel.update({"_id":newsId},{
+		$set: {
+			isChecked:true
+		}
+	},(error,data) => {
+		if(!error){
+			res.json({
+				code: 666,
+				msg: 'commitNews Success'
+			})
+		}
+	})
+})
 module.exports = router;
